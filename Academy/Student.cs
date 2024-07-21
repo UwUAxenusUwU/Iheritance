@@ -40,10 +40,17 @@ namespace Academy
 			get { return attendance; }
 			set { attendance = value; }	
 		}
-		public Student(string lastName, string firstName, int age,
-			string specialitty, string group, double ratring, double attendance) : base(lastName, firstName, age)
+		public Student()
 		{
-			Speciality = specialitty;
+			Speciality = null;
+			Group = null;
+			Rating = 0;
+			Attendance = 0;
+		}
+		public Student(string lastName, string firstName, int age,
+			string speciality, string group, double ratring, double attendance) : base(lastName, firstName, age)
+		{
+			Speciality = speciality;
 			Group = group;
 			Rating = ratring;
 			Attendance = attendance;
@@ -68,6 +75,10 @@ namespace Academy
         {
             return base.ToString() + $" {Speciality.PadRight(SPECIALITY_WIDTH)} {Group.PadRight(GROUP_WIDTH)} {Rating.ToString().PadRight(RATING_WIDTH)} {Attendance.ToString().PadRight(ATTENDANCE_WIDTH)}";
         }
+		public override string ToStringFile()
+		{
+			return base.ToStringFile().Replace(';',',')+$"{speciality},{group},{rating},{attendance};";
+		}
 
 
 

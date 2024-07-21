@@ -43,6 +43,7 @@ namespace Academy
 
             Human[] group = new Human[]
             {
+                new Human("Musk", "Elon", 50),
                 new Student("Pinkman", "Jessie", 22, "Chemistry", "WW_228", 95, 97),
                 new Teacher("White", "Walter", 50, "Chemistry", 25),
                 new Graduate("Schrader", "Hank", 40, "Crime", "OBN", 80, 70, "How to catch Heisenderg"),
@@ -51,8 +52,9 @@ namespace Academy
             };
             Save(group);
             Print(group);
+            Console.WriteLine("*------------------*");
             Console.WriteLine();
-            string[] group_copy = new string[group.Length];
+            Human[] group_copy = new Human[group.Length];
             Load(group_copy);
             Console.WriteLine();
             Print(group_copy);
@@ -69,6 +71,12 @@ namespace Academy
                 writer.WriteLine(group[i]);
             }
             writer.Close();
+            StreamWriter writer1 = new StreamWriter("group_to_read.txt");
+            for (int i = 0; i < group.Length; i++)
+            {
+                writer1.WriteLine(group[i].ToStringFile());
+            }
+            writer1.Close();
         }
         static void Print(Human[] group)
         {
@@ -77,26 +85,42 @@ namespace Academy
                 Console.WriteLine(group[i]);    
             }        
         }
-        static void Print(string[] group)
-        {
-            for(int i = 0;i < group.Length; i++)
-            {
-                Console.WriteLine(group[i]);
-            }
-        }
-        static void Load(string[] group) //считывание пока не закончил, не успел. Но логику поймал: считываем в стринг, разбиваем на части, 
+        static void Load(Human[] group) //считывание пока не закончил, не успел. Но логику поймал: считываем в стринг, разбиваем на части, 
                                          //определяем тип, создаём класс, вносим в него инфу в зависимости от класса
         {
             StreamReader reader = new StreamReader("Group.txt");
             string line;
-            while ((line = reader.ReadLine()) != null) 
+            int i = 0;
+            while (!reader.EndOfStream) 
             {
+                line = reader.ReadLine();
                 string[] data = line.Split(' ');
-                if (data[0] == "Academy.Student:") Student student = new Student
+                //data = data.Where(item => item != " ").ToArray();
+                for (int m = 0; m < data.Length; m++)
                 {
-
+                    if (data[m] == " ")
+                    {
+                        data[m] = data[m + 1];
+                    }
                 }
+                //for (int j = 0; j < data.Length; j++) { Console.WriteLine($"{data[j]}\t"); }
+                //int size = data.Length;
+                //Console.WriteLine(size);
+                if (data[i] == "Academy.Student:") 
+                {
+                    Console.WriteLine("-------------------");
+                    group[i] = new Student(data[1], data[2], Convert.ToInt32(data[3]), data[4], data[5], Convert.ToDouble(data[6]), Convert.ToDouble(data[7]));
+                    Console.WriteLine(group[i]);
+                }
+                if (data[i] == "Academy.Teacher:")
+                {
+                    Console.WriteLine("-------------------------");
+                    group[i] = new Teacher(data[1], data[2], Convert.ToInt32(data[3]), data[4], Convert.ToInt32(data[5]));
+                    Console.WriteLine(group[i]);
+                }    
+                i++;
             }
+            reader.Close();
         }
 
     }

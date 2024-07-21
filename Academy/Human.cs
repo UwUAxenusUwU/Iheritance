@@ -26,6 +26,12 @@ namespace Academy
         {
             get => age; set { age = value;}
         }
+        public Human()
+        {
+            LastName = null;
+            FirstName = null;
+            Age = 0;
+        }
         public Human( string lastName, string firstName, int age)
         {
             LastName = lastName;
@@ -41,7 +47,11 @@ namespace Academy
         }
         public override string ToString()
         {
-            return $"{GetType()}: ".PadRight(18) + $"{LastName.PadRight(LAST_NAME_WIDTH)} {FirstName.PadRight(FIRST_NAME_WIDTH)} {Age.ToString().PadRight(AGE_WIDTH)}";
+            return $"{GetType().ToString().Split('.').Last()}: ".PadRight(12) + $"{LastName.PadRight(LAST_NAME_WIDTH)} {FirstName.PadRight(FIRST_NAME_WIDTH)} {Age.ToString().PadRight(AGE_WIDTH)}";
+        }
+        public virtual string ToStringFile()
+        {
+            return $"{GetType().ToString().Split('.').Last()}:" + $"{LastName},{FirstName},{Age.ToString()};";
         }
     }
 }
