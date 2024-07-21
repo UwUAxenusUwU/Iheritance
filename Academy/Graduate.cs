@@ -34,5 +34,10 @@ namespace Academy
         {
             return base.ToStringFile().Replace(';',',')+$"{subject};";
         }
+        public override void Init(string[] values)
+        {
+            base.Init(values);
+            Subject = values[8];
+        }
     }
 }
